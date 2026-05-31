@@ -46,13 +46,13 @@ sudo ldconfig
 ## Installation
 
 ```bash
-npm install gmssl
+npm install gmssl-node
 ```
 
 ## Quick Start
 
 ```typescript
-import { Sm3, Sm2Key, Sm4Ctr, Random, versionStr } from 'gmssl';
+import { Sm3, Sm2Key, Sm4Ctr, Random, versionStr } from 'gmssl-node';
 
 // Version
 console.log(versionStr());
@@ -266,4 +266,4 @@ npm test
 
 Apache License 2.0. See [LICENSE](LICENSE) for details.
 
-Copyright 2014-2024 The GmSSL Project. All Rights Reserved.
+Copyright 2014-2026 The GmSSL Project. All Rights Reserved.

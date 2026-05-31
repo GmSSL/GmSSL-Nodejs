@@ -1,5 +1,5 @@
 /*
- *  Copyright 2014-2024 The GmSSL Project. All Rights Reserved.
+ *  Copyright 2014-2026 The GmSSL Project. All Rights Reserved.
  *
  *  Licensed under the Apache License, Version 2.0 (the License); you may
  *  not use this file except in compliance with the License.
@@ -55,7 +55,7 @@
 // Constants
 // ============================================================
 
-static const char* const GMSSL_NODEJS_VERSION = "GmSSL Node.js 1.0.0";
+static const char* const GMSSL_NODEJS_VERSION = "GmSSL Node.js 1.0.3";
 
 constexpr int SM3_DIGEST_SIZE = 32;
 constexpr int SM3_HMAC_MIN_KEY_SIZE = 16;
