@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build/
+*.node
+*.o
+*.obj
+*.dylib
+*.so
+*.pem
+*.log
+.DS_Store
+.vscode/
+.idea/
+*.tgz

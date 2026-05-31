@@ -1,0 +1,111 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+jobs:
+  build-and-test:
+    name: Build & Test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-22.04, macos-14]
+        node-version: [18, 20, 22]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install GmSSL (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential
+          git clone https://github.com/guanzhi/GmSSL.git /tmp/GmSSL
+          cd /tmp/GmSSL
+          mkdir build && cd build
+          cmake ..
+          make -j$(nproc)
+          sudo make install
+          sudo ldconfig
+          echo "/usr/local/lib" | sudo tee /etc/ld.so.conf.d/gmssl.conf
+          sudo ldconfig
+
+      - name: Install GmSSL (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install cmake
+          git clone https://github.com/guanzhi/GmSSL.git /tmp/GmSSL
+          cd /tmp/GmSSL
+          mkdir build && cd build
+          cmake ..
+          make -j$(sysctl -n hw.logicalcpu)
+          sudo make install
+
+      - name: Verify GmSSL installation
+        run: |
+          ls -la /usr/local/lib/libgmssl* 2>/dev/null || ls -la /usr/local/lib/libgmssl* 2>/dev/null || echo "checking lib..."
+          ls -la /usr/local/include/gmssl/ 2>/dev/null | head -5
+          echo "Library installed successfully"
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build native addon
+        run: npm run build:addon
+
+      - name: Build TypeScript
+        run: npm run build
+
+      - name: Run tests
+        run: npm test
+
+  publish-check:
+    name: NPM Publish (Dry Run)
+    runs-on: ubuntu-22.04
+    needs: build-and-test
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install GmSSL (Linux)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y cmake build-essential
+          git clone https://github.com/guanzhi/GmSSL.git /tmp/GmSSL
+          cd /tmp/GmSSL
+          mkdir build && cd build
+          cmake ..
+          make -j$(nproc)
+          sudo make install
+          sudo ldconfig
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build all
+        run: npm run build:all
+
+      - name: Run tests
+        run: npm test
+
+      - name: Pack (dry-run)
+        run: npm pack --dry-run

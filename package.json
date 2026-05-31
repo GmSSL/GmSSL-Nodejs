@@ -1,0 +1,68 @@
+{
+  "name": "gmssl",
+  "version": "1.0.0",
+  "description": "GmSSL Node.js binding - Chinese National Standard Cryptographic Algorithms (SM2/SM3/SM4/SM9/ZUC)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist/",
+    "src/",
+    "binding.gyp",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "build:addon": "node-gyp rebuild",
+    "build:all": "npm run build:addon && npm run build",
+    "test": "jest --verbose",
+    "test:addon": "jest --verbose --testPathPattern='native'",
+    "prepublishOnly": "npm run build:all && npm test",
+    "clean": "rm -rf dist build node_modules",
+    "install": "node-gyp rebuild"
+  },
+  "keywords": [
+    "gmssl",
+    "sm2",
+    "sm3",
+    "sm4",
+    "sm9",
+    "zuc",
+    "crypto",
+    "cryptography",
+    "chinese-cryptography",
+    "guomi",
+    "national-standard"
+  ],
+  "license": "Apache-2.0",
+  "author": "GmSSL Project",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/GmSSL/GmSSL-Nodejs"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "devDependencies": {
+    "@types/bindings": "^1.5.5",
+    "@types/jest": "^29.5.12",
+    "@types/node": "^20.11.0",
+    "jest": "^29.7.0",
+    "node-addon-api": "^7.0.0",
+    "node-gyp": "^10.0.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "bindings": "^1.5.0",
+    "node-addon-api": "^7.0.0"
+  },
+  "gypfile": true,
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/test/**/*.test.ts"
+    ]
+  }
+}
