@@ -1,6 +1,6 @@
 {
   "name": "gmssl-node",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "GmSSL Node.js binding - Chinese National Standard Cryptographic Algorithms (SM2/SM3/SM4/SM9/ZUC)",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
