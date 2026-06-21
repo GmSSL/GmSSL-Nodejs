@@ -26,7 +26,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake build-essential
-          git clone https://github.com/guanzhi/GmSSL.git /tmp/GmSSL
+          git clone --depth 1 --branch v3.2.0 https://github.com/guanzhi/GmSSL.git /tmp/GmSSL
           cd /tmp/GmSSL
           mkdir build && cd build
           cmake ..
@@ -40,7 +40,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           brew install cmake
-          git clone https://github.com/guanzhi/GmSSL.git /tmp/GmSSL
+          git clone --depth 1 --branch v3.2.0 https://github.com/guanzhi/GmSSL.git /tmp/GmSSL
           cd /tmp/GmSSL
           mkdir build && cd build
           cmake ..
@@ -90,7 +90,7 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y cmake build-essential
-          git clone https://github.com/guanzhi/GmSSL.git /tmp/GmSSL
+          git clone --depth 1 --branch v3.2.0 https://github.com/guanzhi/GmSSL.git /tmp/GmSSL
           cd /tmp/GmSSL
           mkdir build && cd build
           cmake ..

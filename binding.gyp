@@ -5,9 +5,12 @@
       "sources": ["src/gmssl.cc"],
       "include_dirs": [
         "<!@(node -p \"require('node-addon-api').include\")",
-        "/usr/local/include"
+        "<!(node -p \"(process.env.GMSSL_ROOT || '/usr/local') + '/include'\")"
       ],
-      "libraries": ["-L/usr/local/lib", "-lgmssl"],
+      "libraries": [
+        "<!(node -p \"'-L' + (process.env.GMSSL_ROOT || '/usr/local') + '/lib'\")",
+        "-lgmssl"
+      ],
       "cflags!": ["-fno-exceptions"],
       "cflags_cc!": ["-fno-exceptions"],
       "cflags_cc": ["-std=c++17"],
@@ -19,13 +22,19 @@
             "CLANG_CXX_LIBRARY": "libc++",
             "MACOSX_DEPLOYMENT_TARGET": "10.15",
             "OTHER_CFLAGS": ["-std=c++17"],
-            "OTHER_LDFLAGS": ["-L/usr/local/lib", "-lgmssl", "-Wl,-rpath,/usr/local/lib"]
+            "OTHER_LDFLAGS": [
+              "<!(node -p \"'-L' + (process.env.GMSSL_ROOT || '/usr/local') + '/lib'\")",
+              "-lgmssl",
+              "<!(node -p \"'-Wl,-rpath,' + (process.env.GMSSL_ROOT || '/usr/local') + '/lib'\")"
+            ]
           },
           "libraries": []
         }],
         ["OS=='linux'", {
           "cflags_cc": ["-std=c++17"],
-          "ldflags": ["-Wl,-rpath,/usr/local/lib"]
+          "ldflags": [
+            "<!(node -p \"'-Wl,-rpath,' + (process.env.GMSSL_ROOT || '/usr/local') + '/lib'\")"
+          ]
         }]
       ]
     }
